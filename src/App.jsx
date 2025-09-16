@@ -1,13 +1,18 @@
-import reactLogo from "./assets/react.svg";
-import "./App.css";
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
+
 function App() {
+  const [count, setCount] = useState(0)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={reactLogo} className="logo react" alt="React logo" />
-        <h1>Hello from Amplify</h1>
-      </header>
-    </div>
-  );
+    <>
+    <h1>Who dis?</h1>
+      <img
+      src='https://player-bb-reference-pages.s3.us-east-1.amazonaws.com/Jordan+BB+Reference.png'/>
+    </>
+  )
 }
-export default App;
+
+export default App
