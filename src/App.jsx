@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import './App.css'
 import NewImageButton from './components/NewImageButton'
 import RandomImage from './components/RandomImage'
+import RevealNameButton from './components/RevealNameButton';
 
 async function getRandomImageURLFromAPI() {
   const APIURL = 'https://xq6nvrkjrg.execute-api.us-east-1.amazonaws.com/test/RandomImageURL';
@@ -13,7 +14,7 @@ async function getRandomImageURLFromAPI() {
     }
 
     const result = await response.json();
-    return result.url;
+    return result;
   } catch (error) {
     console.error(error.message);
   }
@@ -21,26 +22,32 @@ async function getRandomImageURLFromAPI() {
 
 function App() {
   const [imageURL, setImageURL] = useState(null);
+  const [playerName, setPlayerName] = useState(null);
   const [imageToBeChanged, setImageToBeChanged] = useState(true);
+  const [revealPlayerName, setRevealPlayerName] = useState(false);
 
   function changeImage() {
     setImageURL(null);
-    getRandomImageURLFromAPI().then(url => setImageURL(url));
+    setRevealPlayerName(false);
+    getRandomImageURLFromAPI().then(result => {
+      setImageURL(result.url);
+      setPlayerName(result.name);
+  });
   }
 
-  if (imageToBeChanged) {
-    changeImage();
-    setImageToBeChanged(false);
+  function revealName() {
+    setRevealPlayerName(true);
   }
 
   return (
-    <div>
-      <div id='header'>
+    <>
+      <header>
         <h1>Who dis?</h1>
-      </div>
+      </header>
       <RandomImage imageURL={imageURL}/>
+      <RevealNameButton handleClick={revealName} playerName={playerName} revealPlayerName={revealPlayerName}>Reveal Name</RevealNameButton>
       <NewImageButton onSelect={changeImage}>Change Image</NewImageButton>
-    </div>
+    </>
   )
 }
 
