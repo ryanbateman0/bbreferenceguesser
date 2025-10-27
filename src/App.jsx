@@ -23,8 +23,8 @@ async function getRandomImageURLFromAPI() {
 function App() {
   const [imageURL, setImageURL] = useState(null);
   const [playerName, setPlayerName] = useState(null);
-  const [imageToBeChanged, setImageToBeChanged] = useState(true);
   const [revealPlayerName, setRevealPlayerName] = useState(false);
+  
 
   function changeImage() {
     setImageURL(null);
@@ -38,6 +38,8 @@ function App() {
   function revealName() {
     setRevealPlayerName(true);
   }
+
+  useEffect(() => changeImage(), []);
 
   return (
     <>
