@@ -4,6 +4,7 @@ import './App.css'
 import NewImageButton from './components/NewImageButton'
 import RandomImage from './components/RandomImage'
 import RevealNameButton from './components/RevealNameButton';
+import Filters from './components/Filters';
 
 async function getRandomImageURLFromAPI() {
   const APIURL = 'https://xq6nvrkjrg.execute-api.us-east-1.amazonaws.com/test/RandomImageURL';
@@ -43,6 +44,7 @@ function App() {
 
   return (
     <>
+      <Filters></Filters>
       <header>
         <h1>Who dis?</h1>
       </header>
