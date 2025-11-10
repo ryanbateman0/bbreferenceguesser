@@ -1,5 +1,5 @@
-export default function FilterButton({children}) {
+export default function FilterButton({children, handleClick}) {
     return (
-        <button className="FilterButton">{children}</button>
+        <button className="FilterButton" onClick={() => handleClick(children)}>{children}</button>
     )
 }

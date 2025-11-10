@@ -1,10 +1,11 @@
 import { useState } from "react";
 
-export default function FilterBoolean({buttonLabel, trueLabel, falseLabel, defaultValue}) {
+export default function FilterBoolean({buttonLabel, trueLabel, falseLabel, defaultValue, changeFilterValue}) {
     const [buttonValue, setButtonValue] = useState(defaultValue);
 
     function handleClick(buttonValue) {
         setButtonValue(buttonValue)
+        changeFilterValue(buttonLabel, buttonValue)
     }
 
     return (

@@ -1,10 +1,15 @@
 import { useState } from "react";
 
-export default function FilterSlider({sliderLabel, sliderStep, minValue, maxValue, defaultValue}) {
+export default function FilterSlider({sliderLabel, sliderStep, minValue, maxValue, defaultValue, changeFilterValue}) {
     const [rangeValue, setRangeValue] = useState(defaultValue);
 
     function handleRangeChange(event) {
-        setRangeValue(parseFloat(maxValue - parseFloat(event.target.value).toFixed(1) + minValue).toFixed(1))
+        setRangeValue((previousRange) => {
+            const newValue = parseFloat(parseFloat(maxValue - parseFloat(event.target.value).toFixed(1) + minValue).toFixed(1));
+            changeFilterValue(sliderLabel, newValue);
+            return newValue;
+        })
+        
     }
 
     return (
@@ -22,7 +27,7 @@ export default function FilterSlider({sliderLabel, sliderStep, minValue, maxValu
             <option value="1965" label="1965"></option>
             <option value="1955" label="1955"></option>
         </datalist> */}
-        <span>{rangeValue}</span>
+        <span>{parseFloat(rangeValue)}</span>
         </div>
     )
 }
