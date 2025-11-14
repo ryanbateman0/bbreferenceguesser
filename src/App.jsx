@@ -33,6 +33,18 @@ const FILTERS = [
   "Win Shares" //8
 ]
 
+const SHORTENED_FILTERS = [
+  "LastAS", //0
+  "Debut", //1
+  "LastSeas", //2
+  "NumGames", //3
+  "Active", //4
+  "Hall", //5
+  "VORP", //6
+  "PER", //7
+  "WinShares" //8
+]
+
 const DEFAULT_FILTER_VALUES = {
   [FILTERS[0]]: 1995,
   [FILTERS[1]]: 1995,
@@ -75,6 +87,8 @@ function App() {
   const [revealPlayerName, setRevealPlayerName] = useState(false);
   const [activeFilters, setActiveFilters] = useState(STARTING_FILTERS);
   const [filterValues, setFilterValues] = useState(DEFAULT_FILTER_VALUES);
+
+  useEffect(() => changeImage(), []);
   
   function changeImage() {
     setImageURL(null);
@@ -107,8 +121,6 @@ function App() {
 
     setActiveFilters((previousFilters) => {return {...previousFilters, [filterName]: !activeFilters[filterName]}});
   }
-
-  useEffect(() => changeImage(), []);
 
   return (
     <>
