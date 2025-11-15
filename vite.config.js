@@ -7,7 +7,6 @@ export default defineConfig({
   base: '/bbreferenceguesser/',
   build: {
     outDir: 'bbreferenceguesser',
-    assetsDir: 'assets',
     emptyOutDir: true,
   }
 })
