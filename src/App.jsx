@@ -31,7 +31,7 @@ const SHORTENED_FILTERS = {
 }
 
 const DEFAULT_FILTER_VALUES = {
-  [FILTERS[0]]: 1985,
+  [FILTERS[0]]: 2000,
   [FILTERS[1]]: 1995,
   [FILTERS[2]]: 1995,
   [FILTERS[3]]: 250,
@@ -101,7 +101,6 @@ function BBRefParameterBuilder(activeFilters, filterValues) {
 
 async function getRandomImageWithParamFromAPI(queryParameters) {
   const APIURL = `https://xq6nvrkjrg.execute-api.us-east-1.amazonaws.com/test/RandomImageWithParam${queryParameters}`;
-  console.log(APIURL)
   try {
     const response = await fetch(APIURL);
     if (!response.ok) {
@@ -123,7 +122,9 @@ function App() {
   const [activeFilters, setActiveFilters] = useState(STARTING_FILTERS);
   const [filterValues, setFilterValues] = useState(DEFAULT_FILTER_VALUES);
 
-  useEffect(() => changeImage(), []);
+  useEffect(() => {
+    changeImage()
+  }, []);
   
   function changeImage() {
     setImageURL(null);
@@ -132,8 +133,12 @@ function App() {
     getRandomImageWithParamFromAPI(queryParameters).then(result => {
       setImageURL(`https://player-bb-reference-pages-player-id.s3.us-east-1.amazonaws.com/${result.link.trim()}.png`);
       setPlayerName(result.name);
-      setPlayerCount(result.count)
+      setPlayerCount(result.count);
   });
+    // useEffect(() => {
+    //   localStorage.setItem('activeFilters', JSON.stringify(activeFilters))
+    //   localStorage.setItem('filterValues', JSON.stringify(filterValues))
+    // }, [activeFilters, filterValues])
   }
 
   function revealName() {
