@@ -6,21 +6,6 @@ import RandomImage from './components/RandomImage'
 import RevealNameButton from './components/RevealNameButton';
 import Filters from './components/Filters';
 
-async function getRandomImageURLFromAPI() {
-  const APIURL = 'https://xq6nvrkjrg.execute-api.us-east-1.amazonaws.com/test/RandomImageURL';
-  try {
-    const response = await fetch(APIURL);
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    return result;
-  } catch (error) {
-    console.error(error.message);
-  }
-}
-
 const FILTERS = [
   "Last All Star Appareance", //0
   "Debut Season", //1
@@ -33,17 +18,17 @@ const FILTERS = [
   "Win Shares" //8
 ]
 
-const SHORTENED_FILTERS = [
-  "LastAS", //0
-  "Debut", //1
-  "LastSeas", //2
-  "NumGames", //3
-  "Active", //4
-  "Hall", //5
-  "VORP", //6
-  "PER", //7
-  "WinShares" //8
-]
+const SHORTENED_FILTERS = {
+  [FILTERS[0]]: "LastAS", //0
+  [FILTERS[1]]: "Debut", //1
+  [FILTERS[2]]: "LastSeas", //2
+  [FILTERS[3]]: "NumGames", //3
+  [FILTERS[4]]: "Active", //4
+  [FILTERS[5]]: "Hall", //5
+  [FILTERS[6]]: "VORP", //6
+  [FILTERS[7]]: "PER", //7
+  [FILTERS[8]]: "WinShares" //8
+}
 
 const DEFAULT_FILTER_VALUES = {
   [FILTERS[0]]: 1995,
@@ -81,10 +66,60 @@ const FILTER_RESET_LIST = [
   [6, 7, 8]
 ]
 
+async function getRandomImageURLFromAPI() {
+  const APIURL = 'https://xq6nvrkjrg.execute-api.us-east-1.amazonaws.com/test/RandomImageURL';
+  try {
+    const response = await fetch(APIURL);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+function BBRefParameterBuilder(activeFilters, filterValues) {
+  let queryString = ""
+
+  for (const filter of FILTERS) {
+    if (activeFilters[filter]){
+      if (queryString.length === 0) {
+        queryString += "?"
+      }
+      else {
+        queryString += "&"
+      }
+      queryString += `${SHORTENED_FILTERS[filter]}=${filterValues[filter]}`
+    }
+  }
+
+  return queryString
+}
+
+async function getRandomImageWithParamFromAPI(queryParameters) {
+  const APIURL = `https://xq6nvrkjrg.execute-api.us-east-1.amazonaws.com/test/RandomImageWithParam${queryParameters}`;
+  console.log(APIURL)
+  try {
+    const response = await fetch(APIURL);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
 function App() {
   const [imageURL, setImageURL] = useState(null);
   const [playerName, setPlayerName] = useState(null);
   const [revealPlayerName, setRevealPlayerName] = useState(false);
+  const [playerCount, setPlayerCount] = useState(0);
   const [activeFilters, setActiveFilters] = useState(STARTING_FILTERS);
   const [filterValues, setFilterValues] = useState(DEFAULT_FILTER_VALUES);
 
@@ -93,9 +128,11 @@ function App() {
   function changeImage() {
     setImageURL(null);
     setRevealPlayerName(false);
-    getRandomImageURLFromAPI().then(result => {
-      setImageURL(result.url);
+    const queryParameters = BBRefParameterBuilder(activeFilters, filterValues);
+    getRandomImageWithParamFromAPI(queryParameters).then(result => {
+      setImageURL(`https://player-bb-reference-pages-player-id.s3.us-east-1.amazonaws.com/${result.link.trim()}.png`);
       setPlayerName(result.name);
+      setPlayerCount(result.count)
   });
   }
 
@@ -131,6 +168,7 @@ function App() {
       <RandomImage imageURL={imageURL}/>
       <RevealNameButton handleClick={revealName} playerName={playerName} revealPlayerName={revealPlayerName}>Reveal Name</RevealNameButton>
       <NewImageButton onSelect={changeImage}>Change Image</NewImageButton>
+      
     </>
   )
 }
