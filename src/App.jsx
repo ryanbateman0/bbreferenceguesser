@@ -31,7 +31,7 @@ const SHORTENED_FILTERS = {
 }
 
 const DEFAULT_FILTER_VALUES = {
-  [FILTERS[0]]: 1995,
+  [FILTERS[0]]: 1985,
   [FILTERS[1]]: 1995,
   [FILTERS[2]]: 1995,
   [FILTERS[3]]: 250,
@@ -43,14 +43,14 @@ const DEFAULT_FILTER_VALUES = {
 }
 
 const STARTING_FILTERS = {
-  [FILTERS[0]]: false,
+  [FILTERS[0]]: true,
   [FILTERS[1]]: false,
   [FILTERS[2]]: false,
   [FILTERS[3]]: false,
   [FILTERS[4]]: false,
   [FILTERS[5]]: false,
   [FILTERS[6]]: false,
-  [FILTERS[7]]: true,
+  [FILTERS[7]]: false,
   [FILTERS[8]]: false
 }
 
